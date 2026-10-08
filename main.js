@@ -42,10 +42,19 @@ function initializeApp() {
         onLaserSetNormalized: (data) => windowManager.notifyLaserSetNormalized(data),
         onModeChange: (data) => windowManager.notifyModeChange(data),
         onSlideAction: (data) => {
-            if (data.action === 'next') {
-                exec(`osascript -e 'tell application "System Events" to key code 124'`);
-            } else if (data.action === 'prev') {
-                exec(`osascript -e 'tell application "System Events" to key code 123'`);
+            if (process.platform === 'darwin') {
+                if (data.action === 'next') {
+                    exec(`osascript -e 'tell application "System Events" to key code 124'`);
+                } else if (data.action === 'prev') {
+                    exec(`osascript -e 'tell application "System Events" to key code 123'`);
+                }
+            } else if (process.platform === 'win32') {
+                // Proactively support Windows using PowerShell SendKeys
+                if (data.action === 'next') {
+                    exec(`powershell.exe -c "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('{RIGHT}')"`);
+                } else if (data.action === 'prev') {
+                    exec(`powershell.exe -c "$wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('{LEFT}')"`);
+                }
             }
         }
     });

@@ -21,6 +21,7 @@ function createWindows(port, url) {
         hasShadow: false,
         focusable: false,
         skipTaskbar: true,
+        icon: path.join(__dirname, '..', 'icon.jpg'),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -36,12 +37,15 @@ function createWindows(port, url) {
     qrWindow = new BrowserWindow({
         width: 400,
         height: 600,
+        icon: path.join(__dirname, '..', 'icon.jpg'),
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
         }
     });
     
+    qrWindow.setMenu(null);
     qrWindow.loadFile(path.join(__dirname, 'qr.html'));
     
     qrWindow.webContents.on('did-finish-load', () => {
