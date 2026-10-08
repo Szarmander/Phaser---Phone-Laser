@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const { exec } = require('child_process');
-const { Tunnel } = require('cloudflared');
+const cloudflared = require('cloudflared');
+const { Tunnel } = cloudflared;
 const { createServer } = require('./src/server');
 const windowManager = require('./src/windowManager');
 
@@ -15,6 +16,9 @@ function initializeApp() {
     windowManager.setupIPC();
 
     // 3. Start Cloudflared tunnel
+    if (app.isPackaged) {
+        cloudflared.use(cloudflared.bin.replace('app.asar', 'app.asar.unpacked'));
+    }
     const tunnel = Tunnel.quick(`http://localhost:${PORT}`);
     
     tunnel.on('url', (url) => {

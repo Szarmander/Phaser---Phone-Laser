@@ -17,6 +17,9 @@
   "build": {
     "appId": "com.szarmander.phaser",
     "productName": "Phaser",
+    "asarUnpack": [
+      "node_modules/cloudflared/**/*"
+    ],
     "mac": {
       "target": "dmg",
       "icon": "icon.jpg"
