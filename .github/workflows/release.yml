@@ -5,9 +5,12 @@ on:
 
 jobs:
   release:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     permissions:
-      contents: write # Needed to create releases
+      contents: write
     
     steps:
       - name: Check out Git repository
@@ -23,6 +26,11 @@ jobs:
         
       - name: Build and Publish
         env:
-          # GitHub Actions automatically provides this token, so you don't need to configure it!
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run publish:all
+        shell: bash
+        run: |
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            npm run publish:win
+          else
+            npm run publish:mac
+          fi

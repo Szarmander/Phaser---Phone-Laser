@@ -9,6 +9,10 @@ No mobile app installation required—just scan a QR code and present!
  
  Download the latest version for Mac or Windows here:
  **[Download Latest Release](https://github.com/Szarmander/Phaser---Phone-Laser/releases/latest)**
+ 
+ > **Mac Users Note:** Since this is an indie app, macOS might say the app is "damaged" and should be moved to the Trash. To fix this, open your Terminal and run:
+ > `xattr -cr /Applications/Phaser.app`
+ > (Replace the path if you didn't drag it to Applications). Then you can open it normally!
 
 ## ✨ Features
 - **Zero Mobile Setup:** Simply scan the QR code displayed on your Mac to instantly open the controller web-app.
