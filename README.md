@@ -1,18 +1,21 @@
-# Phaser 🎯
-**Turn your smartphone into a magical presentation laser pointer and clicker!**
+<div align="center">
+  <img src="icon.jpg" alt="Phaser Logo" width="200" style="border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 20px;"/>
+  <h1>Phaser 🎯</h1>
+  <p><b>Turn your smartphone into a magical presentation laser pointer and clicker!</b></p>
+  
+  [![Mac Download](https://img.shields.io/badge/Download-Mac-lightgrey?style=for-the-badge&logo=apple)](https://github.com/Szarmander/Phaser---Phone-Laser/releases/latest)
+  [![Windows Download](https://img.shields.io/badge/Download-Windows-blue?style=for-the-badge&logo=windows)](https://github.com/Szarmander/Phaser---Phone-Laser/releases/latest)
+</div>
+
+<br/>
 
 Phaser is a lightweight, zero-configuration desktop application that seamlessly connects your smartphone to your computer. It allows you to use your phone's touchscreen or gyroscope as a laser pointer for your presentations, while also serving as a slide clicker. 
 
 No mobile app installation required—just scan a QR code and present!
- 
- ### 📥 Download the App
- 
- Download the latest version for Mac or Windows here:
- **[Download Latest Release](https://github.com/Szarmander/Phaser---Phone-Laser/releases/latest)**
- 
- > **Mac Users Note:** Since this is an indie app, macOS might say the app is "damaged" and should be moved to the Trash. To fix this, open your Terminal and run:
- > `xattr -cr /Applications/Phaser.app`
- > (Replace the path if you didn't drag it to Applications). Then you can open it normally!
+
+> 🍏 **Mac Users Note:** Since this is an indie app, macOS might say the app is "damaged" and should be moved to the Trash. To fix this, open your Terminal and run:
+> `xattr -cr /Applications/Phaser.app` (Change the path if you didn't place it in Applications). Then you can open it normally!
+
 
 ## ✨ Features
 - **Zero Mobile Setup:** Simply scan the QR code displayed on your Mac to instantly open the controller web-app.
