@@ -8,21 +8,30 @@
 </head>
 <body>
     <div class="container">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <img src="../icon.jpg" alt="Phaser Logo" style="width: 40px; height: 40px; border-radius: 8px;">
-            <h1 style="margin: 0;">Phaser Controller</h1>
-        </div>
-        <div id="connection-status" style="display: none; color: green; font-weight: bold; margin-bottom: 20px; font-size: 18px;">
-            ✅ Phone Connected!
+        <header class="header-banner">
+            <img class="logo" src="../icon.jpg" alt="Phaser Logo">
+            <h1>Phaser Controller</h1>
+        </header>
+
+        <div id="connection-status" class="status-banner connected hidden">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Phone Connected!</span>
         </div>
 
-        <div id="qr-section">
+        <div id="loading-state" class="loading-state">
+            <div class="spinner"></div>
+            <p>Establishing secure tunnel...</p>
+        </div>
+
+        <div id="qr-section" class="qr-section hidden">
             <p>Scan the QR code with your phone to connect.</p>
-            
+
             <div id="qr-container">
-                <img id="qr-image" src="" alt="QR Code" style="display: none;">
+                <img id="qr-image" src="" alt="QR Code" class="hidden">
             </div>
-            
+
             <p class="url" id="url-text">Loading...</p>
         </div>
 
@@ -33,7 +42,7 @@
             </select>
         </div>
     </div>
-    
+
     <script src="qr.js"></script>
 </body>
 </html>

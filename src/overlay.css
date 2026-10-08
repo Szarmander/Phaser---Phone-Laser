@@ -17,7 +17,7 @@ body {
     pointer-events: none;
     display: none;
     transform: translate(-50%, -50%);
-    /* transition: left 0.05s linear, top 0.05s linear; */
+    transition: left 0.05s linear, top 0.05s linear;
     z-index: 1000;
 }
 

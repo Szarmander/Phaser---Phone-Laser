@@ -2,27 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>Phaser Remote</title>
-    <link rel="icon" href="icon.jpg">
-    <link rel="apple-touch-icon" href="icon.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Phaser Controller</title>
     <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
+
     <div class="header">
-        <div class="controls">
-            <button id="btn-off">Off</button>
-            <button id="btn-laser" class="active">Phaser</button>
-            <button id="btn-highlight">Highlight</button>
+        <button id="btn-laser" class="active">Laser</button>
+        <button id="btn-highlight">Highlight</button>
+        <button id="btn-off">Off</button>
+    </div>
+
+    <div class="mode-toggle">
+        <button id="btn-touch" class="active">Touchpad</button>
+        <button id="btn-gyro">Gyroscope</button>
+    </div>
+    
+    <div id="touchpad-area" class="control-area">
+        <p>Use as Touchpad</p>
+    </div>
+    
+    <div id="gyro-area" class="control-area hidden">
+        <div class="gyro-content">
+            <button id="btn-recenter" class="big-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                Recenter
+            </button>
+            <p class="hint">Point at the screen and tap Recenter.</p>
+            <p id="gyro-debug" class="debug-text">Waiting for sensor data...</p>
         </div>
     </div>
-    <div id="touchpad">
-        <p>Touch & Drag to Move</p>
-    </div>
+
     <div class="footer">
         <div class="controls">
-            <button id="btn-prev" style="font-size: 24px; padding: 15px 0;">⬅️</button>
-            <button id="btn-next" style="font-size: 24px; padding: 15px 0;">➡️</button>
+            <button id="btn-prev" class="icon-btn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            <button id="btn-next" class="icon-btn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
         </div>
     </div>
 

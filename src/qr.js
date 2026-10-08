@@ -1,16 +1,24 @@
 const { ipcRenderer } = require('electron');
 
+const elLoadingState = document.getElementById('loading-state');
+const elQrSection = document.getElementById('qr-section');
+const elConnectionStatus = document.getElementById('connection-status');
+const elUrlText = document.getElementById('url-text');
+const elQrImage = document.getElementById('qr-image');
+const elDisplaySelect = document.getElementById('display-select');
+
 ipcRenderer.on('setup-data', (event, data) => {
+    // Hide loading state, show QR section
+    elLoadingState.classList.add('hidden');
+    elQrSection.classList.remove('hidden');
+
     // Show URL and QR Code
-    document.getElementById('url-text').innerText = data.url;
-    
-    const qrImg = document.getElementById('qr-image');
-    qrImg.src = data.qrUrl;
-    qrImg.style.display = 'block';
+    elUrlText.innerText = data.url;
+    elQrImage.src = data.qrUrl;
+    elQrImage.classList.remove('hidden');
 
     // Populate display select
-    const select = document.getElementById('display-select');
-    select.innerHTML = ''; // clear
+    elDisplaySelect.innerHTML = ''; // clear
 
     data.displays.forEach((display, index) => {
         const option = document.createElement('option');
@@ -21,22 +29,22 @@ ipcRenderer.on('setup-data', (event, data) => {
             option.selected = true;
         }
         
-        select.appendChild(option);
+        elDisplaySelect.appendChild(option);
     });
 
     // Handle display change
-    select.addEventListener('change', (e) => {
+    elDisplaySelect.addEventListener('change', (e) => {
         const displayId = parseInt(e.target.value, 10);
         ipcRenderer.send('change-display', displayId);
     });
 });
 
 ipcRenderer.on('device-connected', () => {
-    document.getElementById('qr-section').style.display = 'none';
-    document.getElementById('connection-status').style.display = 'block';
+    elQrSection.classList.add('hidden');
+    elConnectionStatus.classList.remove('hidden');
 });
 
 ipcRenderer.on('device-disconnected', () => {
-    document.getElementById('qr-section').style.display = 'block';
-    document.getElementById('connection-status').style.display = 'none';
+    elQrSection.classList.remove('hidden');
+    elConnectionStatus.classList.add('hidden');
 });

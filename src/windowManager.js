@@ -5,7 +5,7 @@ const qrcode = require('qrcode');
 let qrWindow;
 let overlayWindow;
 
-function createWindows(port, getLocalIP) {
+function createWindows(port, url) {
     const displays = screen.getAllDisplays();
     const primaryDisplay = screen.getPrimaryDisplay();
     
@@ -21,7 +21,6 @@ function createWindows(port, getLocalIP) {
         hasShadow: false,
         focusable: false,
         skipTaskbar: true,
-        icon: path.join(__dirname, '../icon.jpg'),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -37,7 +36,6 @@ function createWindows(port, getLocalIP) {
     qrWindow = new BrowserWindow({
         width: 400,
         height: 600,
-        icon: path.join(__dirname, '../icon.jpg'),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -47,21 +45,9 @@ function createWindows(port, getLocalIP) {
     qrWindow.loadFile(path.join(__dirname, 'qr.html'));
     
     qrWindow.webContents.on('did-finish-load', () => {
-        const ip = getLocalIP();
-        const url = `http://${ip}:${port}`;
-        
-        qrcode.toDataURL(url, (err, qrUrl) => {
-            if (err) console.error(err);
-            qrWindow.webContents.send('setup-data', {
-                url,
-                qrUrl,
-                displays: displays.map(d => ({
-                    id: d.id,
-                    bounds: d.bounds,
-                    isPrimary: d.id === primaryDisplay.id
-                }))
-            });
-        });
+        if (url) {
+            notifyTunnelReady(url);
+        }
     });
 
     // Close entire application when QR window is closed
@@ -72,11 +58,31 @@ function createWindows(port, getLocalIP) {
     return { qrWindow, overlayWindow };
 }
 
+function notifyTunnelReady(url) {
+    const displays = screen.getAllDisplays();
+    const primaryDisplay = screen.getPrimaryDisplay();
+    
+    qrcode.toDataURL(url, (err, qrUrl) => {
+        if (err) console.error(err);
+        if (qrWindow && !qrWindow.isDestroyed()) {
+            qrWindow.webContents.send('setup-data', {
+                url,
+                qrUrl,
+                displays: displays.map(d => ({
+                    id: d.id,
+                    bounds: d.bounds,
+                    isPrimary: d.id === primaryDisplay.id
+                }))
+            });
+        }
+    });
+}
+
 function notifyDeviceConnected() {
     if (qrWindow && !qrWindow.isDestroyed()) {
         qrWindow.webContents.send('device-connected');
         // Shrink window height
-        qrWindow.setSize(400, 250);
+        qrWindow.setSize(400, 350);
     }
     if (overlayWindow && !overlayWindow.isDestroyed()) {
         overlayWindow.webContents.send('device-connected');
@@ -100,6 +106,12 @@ function notifyLaserMove(data) {
     }
 }
 
+function notifyLaserSetNormalized(data) {
+    if (overlayWindow && !overlayWindow.isDestroyed()) {
+        overlayWindow.webContents.send('laser-set-normalized', data);
+    }
+}
+
 function notifyModeChange(data) {
     if (overlayWindow && !overlayWindow.isDestroyed()) {
         overlayWindow.webContents.send('mode-change', data);
@@ -119,9 +131,11 @@ function setupIPC() {
 
 module.exports = {
     createWindows,
+    notifyTunnelReady,
     notifyDeviceConnected,
     notifyDeviceDisconnected,
     notifyLaserMove,
+    notifyLaserSetNormalized,
     notifyModeChange,
     setupIPC
 };

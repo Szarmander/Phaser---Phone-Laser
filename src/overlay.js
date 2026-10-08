@@ -45,6 +45,22 @@ ipcRenderer.on('laser-move', (event, data) => {
     updatePosition();
 });
 
+ipcRenderer.on('laser-set-normalized', (event, data) => {
+    // data.offsetX and data.offsetY are between -1 and 1
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    // Using the half-width and half-height as multipliers
+    x = centerX + (data.offsetX * centerX);
+    y = centerY + (data.offsetY * centerY);
+    
+    // Clamp to screen bounds
+    x = Math.max(0, Math.min(window.innerWidth, x));
+    y = Math.max(0, Math.min(window.innerHeight, y));
+
+    updatePosition();
+});
+
 ipcRenderer.on('mode-change', (event, data) => {
     currentMode = data.mode;
     updatePosition();

@@ -1,23 +1,45 @@
 const { app, BrowserWindow } = require('electron');
 const { exec } = require('child_process');
-const { getLocalIP } = require('./src/network');
+const { Tunnel } = require('cloudflared');
 const { createServer } = require('./src/server');
 const windowManager = require('./src/windowManager');
 
 const PORT = 3000;
+let publicUrl = '';
 
-app.whenReady().then(() => {
-    // 1. Create windows
-    windowManager.createWindows(PORT, getLocalIP);
+function initializeApp() {
+    // 1. Create windows immediately in a loading state
+    windowManager.createWindows(PORT, null);
     
     // 2. Setup IPC for internal communication
     windowManager.setupIPC();
 
-    // 3. Start server and provide callbacks for events
+    // 3. Start Cloudflared tunnel
+    const tunnel = Tunnel.quick(`http://localhost:${PORT}`);
+    
+    tunnel.on('url', (url) => {
+        publicUrl = url;
+        console.log('Cloudflare Tunnel created at:', publicUrl);
+        // Send the URL to the qr window
+        windowManager.notifyTunnelReady(url);
+    });
+
+    tunnel.on('error', (err) => {
+        console.error('Tunnel error:', err);
+        // Fallback to local IP if tunnel fails
+        if (!publicUrl) {
+            const { getLocalIP } = require('./src/network');
+            publicUrl = `http://${getLocalIP()}:${PORT}`;
+            windowManager.notifyTunnelReady(publicUrl);
+        }
+    });
+
+    // 4. Start server and provide callbacks for events
     createServer(PORT, {
         onConnect: () => windowManager.notifyDeviceConnected(),
         onDisconnect: () => windowManager.notifyDeviceDisconnected(),
         onLaserMove: (data) => windowManager.notifyLaserMove(data),
+        onLaserSetNormalized: (data) => windowManager.notifyLaserSetNormalized(data),
         onModeChange: (data) => windowManager.notifyModeChange(data),
         onSlideAction: (data) => {
             if (data.action === 'next') {
@@ -27,10 +49,14 @@ app.whenReady().then(() => {
             }
         }
     });
+}
+
+app.whenReady().then(() => {
+    initializeApp();
 
     app.on('activate', function () {
         if (BrowserWindow.getAllWindows().length === 0) {
-            windowManager.createWindows(PORT, getLocalIP);
+            windowManager.createWindows(PORT, publicUrl);
         }
     });
 });

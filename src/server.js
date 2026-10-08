@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const { getLocalIP } = require('./network');
 
 function createServer(port, callbacks) {
     const app = express();
@@ -27,6 +28,10 @@ function createServer(port, callbacks) {
 
         socket.on('laser-move', (data) => {
             if (callbacks.onLaserMove) callbacks.onLaserMove(data);
+        });
+        
+        socket.on('laser-set-normalized', (data) => {
+            if (callbacks.onLaserSetNormalized) callbacks.onLaserSetNormalized(data);
         });
 
         socket.on('mode-change', (data) => {
