@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phaser</title>
+    <link rel="icon" href="../icon.jpg">
+    <link rel="stylesheet" href="qr.css">
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="../icon.jpg" alt="Phaser Logo" style="width: 40px; height: 40px; border-radius: 8px;">
+            <h1 style="margin: 0;">Phaser Controller</h1>
+        </div>
+        <div id="connection-status" style="display: none; color: green; font-weight: bold; margin-bottom: 20px; font-size: 18px;">
+            ✅ Phone Connected!
+        </div>
+
+        <div id="qr-section">
+            <p>Scan the QR code with your phone to connect.</p>
+            
+            <div id="qr-container">
+                <img id="qr-image" src="" alt="QR Code" style="display: none;">
+            </div>
+            
+            <p class="url" id="url-text">Loading...</p>
+        </div>
+
+        <div class="settings">
+            <label for="display-select">Target Monitor:</label>
+            <select id="display-select">
+                <!-- Options populated dynamically -->
+            </select>
+        </div>
+    </div>
+    
+    <script src="qr.js"></script>
+</body>
+</html>
