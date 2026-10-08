@@ -4,6 +4,11 @@
 Phaser is a lightweight, zero-configuration desktop application that seamlessly connects your smartphone to your computer. It allows you to use your phone's touchscreen or gyroscope as a laser pointer for your presentations, while also serving as a slide clicker. 
 
 No mobile app installation required—just scan a QR code and present!
+ 
+ ### 📥 Download the App
+ 
+ Download the latest version for Mac or Windows here:
+ **[Download Latest Release](https://github.com/Szarmander/Phaser---Phone-Laser/releases/latest)**
 
 ## ✨ Features
 - **Zero Mobile Setup:** Simply scan the QR code displayed on your Mac to instantly open the controller web-app.

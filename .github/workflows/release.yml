@@ -1,0 +1,28 @@
+name: Build and Release
+
+on:
+  workflow_dispatch: # This allows you to manually trigger the workflow from the GitHub Actions tab
+
+jobs:
+  release:
+    runs-on: macos-latest
+    permissions:
+      contents: write # Needed to create releases
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      - name: Install Dependencies
+        run: npm install
+        
+      - name: Build and Publish
+        env:
+          # GitHub Actions automatically provides this token, so you don't need to configure it!
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run publish:all
